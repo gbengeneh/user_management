@@ -52,7 +52,7 @@
                 <h3>Quick Actions</h3>
                 <div class="action-buttons">
                     <a href="profile.php" class="btn">Edit Profile</a>
-                    <a href="#" class="btn">Change Password</a>
+                   <a href="change_password.php" class="btn">Change Password</a>
                     <a href="#" class="btn">Account Settings</a>
                 </div>
             </div>

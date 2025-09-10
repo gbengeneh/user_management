@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Handle profile image upload
     if (isset($_FILES["profile_image"]) && $_FILES["profile_image"]["error"] == 0) {
-        $allowed = ["jpg" => "image/jpeg", "jpeg" => "image/jpeg", "png" => "image/png", "gif" => "image/gif"];
+        $allowed = ["jpg" => "image/jpg", "jpeg" => "image/jpeg", "png" => "image/png", "gif" => "image/gif"];
         $filename = $_FILES["profile_image"]["name"];
         $filetype = $_FILES["profile_image"]["type"];
         $filesize = $_FILES["profile_image"]["size"];
@@ -188,8 +188,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                     <label>Lastname</label>
-                    <input type="text" name="username" value="<?php echo htmlspecialchars($username); ?>">
-                    <span class="help-block"><?php echo $username_err; ?></span>
+                    <input type="text" name="lastname" value="<?php echo htmlspecialchars($lastname); ?>">
+                    <span class="help-block"><?php echo $lastname_err; ?></span>
                 </div>
                 <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                     <label>Username</label>
