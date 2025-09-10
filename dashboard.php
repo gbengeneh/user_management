@@ -9,7 +9,7 @@
 
     // get user Information
     $user_id = $_SESSION["id"];
-    $sql = "SELECT username , email, created_at , profile_image FROM users WHERE id=:id";
+    $sql = "SELECT firstname, lastname, username , email, created_at , profile_image FROM users WHERE id=:id";
     $stmt = $pdo->prepare(($sql));
     $stmt->bindParam(":id", $user_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -40,6 +40,8 @@
                     <?php if (!empty($user['profile_image'])): ?>
                         <img src="<?php echo htmlspecialchars($user['profile_image']); ?>" alt="Profile Image" style="max-width: 150px; max-height: 150px; display: block; margin-bottom: 10px;">
                     <?php endif; ?>
+                    <p><strong>First Name:</strong> <?php echo htmlspecialchars($user['firstname']); ?></p>
+                    <p><strong>Last Name:</strong> <?php echo htmlspecialchars($user['lastname']); ?></p>
                     <p><strong>Username:</strong> <?php echo htmlspecialchars($user['username']); ?></p>
                     <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
                     <p><strong>Member since:</strong> <?php echo date("F j, Y", strtotime($user['created_at'])); ?></p>
