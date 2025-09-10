@@ -2,10 +2,24 @@
 session_start();
 require_once 'config/database.php';
 
-$username = $email = $password = $confirm_password = "";
-$username_err = $email_err = $password_err = $confirm_password_err = $register_err = "";
+$firstname = $lastname = $username = $email = $password = $confirm_password = "";
+$firstname_err = $lastname_err = $username_err = $email_err = $password_err = $confirm_password_err = $register_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // validate firstname
+     if (empty(trim($_POST["firstname"]))) {
+        $firstname_err = "Please enter a first name.";
+    }else{
+        $firstname = trim($_POST["firstname"]);
+    }
+
+    // validate lastname
+     if (empty(trim($_POST["lastname"]))) {
+        $lastname_err = "Please enter a last name.";
+    }else{
+        $lastname = trim($_POST["lastname"]);
+    }
+
     // Validate username
     if (empty(trim($_POST["username"]))) {
         $username_err = "Please enter a username.";
@@ -63,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate confirm password
     if (empty(trim($_POST["confirm_password"]))) {
-        $confirm_password_err = "Please enter confirm password.";
+        $confirm_password_err = "Please confirm password.";
     } else {
         $confirm_password = trim($_POST["confirm_password"]);
         if (empty($password_err) && ($password != $confirm_password)) {
@@ -72,13 +86,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Check input errors before inserting in database
-    if (empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)) {
-        $sql = "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)";
+    if (empty($firstname_err) && empty($lastname_err) && empty($username_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)) {
+        $sql = "INSERT INTO users (firstname, lastname, username, email, password) VALUES (:firstname, :lastname, :username, :email, :password)";
         if ($stmt = $pdo->prepare($sql)) {
+            $stmt->bindParam(":firstname", $param_firstname, PDO::PARAM_STR);
+            $stmt->bindParam(":lastname", $param_lastname, PDO::PARAM_STR);
             $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
             $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
             $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);
 
+            $param_firstname = $firstname;
+            $param_lastname = $lastname;
             $param_username = $username;
             $param_email = $email;
             $param_password = password_hash($password, PASSWORD_DEFAULT);
@@ -114,6 +132,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }        
         ?>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <div class="form-group <?php echo (!empty($firstname_err)) ? 'has-error' : ''; ?>">
+                <label>First Name</label>
+                <input type="text" name="firstname" value="<?php echo htmlspecialchars($firstname); ?>">
+                <span class="help-block"><?php echo $firstname_err; ?></span>
+            </div>    
+            <div class="form-group <?php echo (!empty($lastname_err)) ? 'has-error' : ''; ?>">
+                <label>Last Name</label>
+                <input type="text" name="lastname" value="<?php echo htmlspecialchars($lastname); ?>">
+                <span class="help-block"><?php echo $lastname_err; ?></span>
+            </div>    
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
                 <input type="text" name="username" value="<?php echo htmlspecialchars($username); ?>">
